@@ -13,8 +13,8 @@ services:
       - '3306:3306'
     volumes:
       - ./mysql-db:/var/lib/mysql
-      # - ./test_db/mckenzie:/docker-entrypoint-initdb.d
-      # - ./test_db/dumps:/var/dumps
+      - ./test_db/mckenzie:/docker-entrypoint-initdb.d
+      - ./test_db/dumps:/var/dumps
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
