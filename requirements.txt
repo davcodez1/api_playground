@@ -1,4 +1,7 @@
 sqlalchemy
 fastapi
 uvicorn
+mysql-connector-python
 pyodbc
+pymysql
+cryptography
