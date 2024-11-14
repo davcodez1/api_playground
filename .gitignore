@@ -1,0 +1,4 @@
+venv
+
+  git config --global user.email "mndavila01@gmail.com"
+  git config --global user.name "davcodez1"
