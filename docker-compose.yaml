@@ -1,0 +1,44 @@
+version: '3.3'
+services:
+  db:
+    container_name: db
+    image: mysql:9.1.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'employees'
+      MYSQL_USER: 'mckenzie'
+      MYSQL_PASSWORD: 'password1'
+      MYSQL_ROOT_PASSWORD: 'password1'
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mysql-db:/var/lib/mysql
+      # - ./test_db/mckenzie:/docker-entrypoint-initdb.d
+      # - ./test_db/dumps:/var/dumps
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - fastapi_network
+# microservice for FastAPI
+  fastapi:
+    container_name: fastapi
+    depends_on:
+      db:
+        condition: service_healthy
+    build:
+      context: .             
+      dockerfile: ./FastApi/Dockerfile
+    ports:
+      - "8000:8000"    
+    networks:
+      - fastapi_network    
+# Names our volume
+volumes:
+  mysql-db: {driver: local}
+  test_db: {driver: local}
+networks:
+  fastapi_network:
